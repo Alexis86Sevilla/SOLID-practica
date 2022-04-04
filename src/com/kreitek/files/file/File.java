@@ -1,13 +1,14 @@
-package com.kreitek.files;
+package com.kreitek.files.file;
 
+import com.kreitek.files.*;
 import com.kreitek.files.error.InvalidFileFormatException;
 
 import java.util.List;
 
-public  class File extends FileSystemItemBase implements FileSystemItem {
+public class File extends FileSystemItemBase implements FilesDirectoriesUtilities, EditFilesDirectories, GetInfo {
 
     private int size = 0;
-    private boolean isOpen = false;
+    protected boolean isOpen = false;
     private int position = 0;
 
     public File(FileSystemItem parent, String name) {
@@ -44,13 +45,6 @@ public  class File extends FileSystemItemBase implements FileSystemItem {
         return size;
     }
 
-    @Override
-    public void open() {
-        isOpen = true;
-        // Aquí vendría código que actualizaría también this.size
-    }
-
-    @Override
     public void setPosition(int numberOfBytesFromBeginning) {
         if (!isOpen) {
             throw new UnsupportedOperationException("Debe abrir el fichero primero");
@@ -61,7 +55,6 @@ public  class File extends FileSystemItemBase implements FileSystemItem {
         this.position = numberOfBytesFromBeginning;
     }
 
-    @Override
     public byte[] read(int numberOfBytesToRead) {
         if (position + numberOfBytesToRead > size) {
             numberOfBytesToRead = size - position;
@@ -82,6 +75,12 @@ public  class File extends FileSystemItemBase implements FileSystemItem {
     @Override
     public void close() {
         isOpen = false;
+    }
+
+    @Override
+    public void open() {
+        isOpen = true;
+        // Aquí vendría código que actualizaría también this.size
     }
 
     public FileSystemItem convertMp3ToWav() {
@@ -120,4 +119,7 @@ public  class File extends FileSystemItemBase implements FileSystemItem {
         return result;
     }
 
+
+
 }
+
